@@ -74,7 +74,7 @@ export async function generateImage(
             fill: white;          
             font-family: 'CustomFont';
             font-size: 40px;
-            font-weight: 600;
+            font-weight: bold;
           }
         </style>
         
