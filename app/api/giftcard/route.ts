@@ -35,22 +35,13 @@ export async function POST(
       console.log("Error formateando numero", e);
     }
 
-    const baseUrl = new URL(request.url).origin; 
-    
-    const imageUrl = `${baseUrl}/images/gift-card-base.png`;
-    const imageRes = await fetch(imageUrl);
-    if (!imageRes.ok) throw new Error("No se pudo cargar la imagen base");
-    const imageArrayBuffer = await imageRes.arrayBuffer();
-    const imageBuffer = Buffer.from(imageArrayBuffer);
+    const imagePath = path.join(process.cwd(), 'public', 'images', 'gift-card-base.png');
+    const fontPath = path.join(process.cwd(), 'public', 'fonts', 'OpenSans.ttf');
 
-    const fontUrl = `${baseUrl}/fonts/OpenSans.ttf`;
-    const fontRes = await fetch(fontUrl);
-    if (!fontRes.ok) {
-        console.error("Error cargando fuente:", fontRes.statusText);
-        throw new Error("No se pudo cargar la tipografía"); 
-    }
-    const fontArrayBuffer = await fontRes.arrayBuffer();
-    const fontBuffer = Buffer.from(fontArrayBuffer);
+    const [imageBuffer, fontBuffer] = await Promise.all([
+      fs.readFile(imagePath),
+      fs.readFile(fontPath)
+    ]);
 
     const finalImage = await generateImage(imageBuffer, fontBuffer, {
       name,
