@@ -10,7 +10,7 @@ export async function POST(
   try {
     const formData = await request.formData();
     
-    const name = formData.get('name') as string;
+    let name = formData.get('name') as string;
     let total = formData.get('total') as string;
     const msg = formData.get('msg') as string | null;
 
@@ -35,16 +35,30 @@ export async function POST(
       console.log("Error formateando numero", e);
     }
 
-    const imagePath = path.join(process.cwd(), 'public', 'images', 'gift-card-base.png');
+    const baseUrl = new URL(request.url).origin; 
     
-    const imageBuffer = await fs.readFile(imagePath);
+    const imageUrl = `${baseUrl}/images/gift-card-base.png`;
+    const imageRes = await fetch(imageUrl);
+    if (!imageRes.ok) throw new Error("No se pudo cargar la imagen base");
+    const imageArrayBuffer = await imageRes.arrayBuffer();
+    const imageBuffer = Buffer.from(imageArrayBuffer);
 
-    // 3. Llamar al servicio con el buffer que acabamos de leer
-    const finalImage = await generateImage(imageBuffer, {
+    const fontUrl = `${baseUrl}/fonts/OpenSans.ttf`;
+    const fontRes = await fetch(fontUrl);
+    if (!fontRes.ok) {
+        console.error("Error cargando fuente:", fontRes.statusText);
+        throw new Error("No se pudo cargar la tipografía"); 
+    }
+    const fontArrayBuffer = await fontRes.arrayBuffer();
+    const fontBuffer = Buffer.from(fontArrayBuffer);
+
+    const finalImage = await generateImage(imageBuffer, fontBuffer, {
       name,
       total,
       msg: msg || '' 
     });
+
+    name = name.split(' ').join('-')
 
     return new NextResponse(finalImage as any, {
       headers: { 

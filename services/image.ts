@@ -8,12 +8,15 @@ export interface GiftCard {
 
 export async function generateImage(
   baseImageBuffer: Buffer, 
+  fontBuffer: Buffer,
   textos: GiftCard
 ): Promise<Buffer> {
   try {
     const metadata = await sharp(baseImageBuffer).metadata();
     const width = metadata.width ?? 1000; // Default values just in case
     const height = metadata.height ?? 1000;
+
+    const fontBase64 = fontBuffer.toString('base64');
 
     const today = new Date();
     const dateStr = today.toLocaleDateString('es-AR', {
@@ -41,7 +44,7 @@ export async function generateImage(
       lines = [msg];
     }
 
-    // 2. Create SVG
+    // Create SVG
     let innerContent;
 
     if (lines.length === 1) {
@@ -55,15 +58,21 @@ export async function generateImage(
     const svgTemplate = `
       <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
         <style>
+           @font-face {
+            font-family: 'CustomFont';
+            src: url('data:font/ttf;base64,${fontBase64}') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+          }
           .data {
             fill: black;          
-            font-family: 'Open Sans', sans-serif;
+            font-family: 'CustomFont', sans-serif;
             font-weight: bold;
             font-size: 45px;
           }
           .msg {
             fill: white;          
-            font-family: 'Open Sans', sans-serif;
+            font-family: 'CustomFont', sans-serif;
             font-size: 40px;
             font-weight: 600;
           }
@@ -87,12 +96,12 @@ export async function generateImage(
       </svg>
     `;
 
-    // 3. Composición: Pegamos la plantilla SVG sobre la imagen base
+    // Put SVG over base iamge
     const finalBuffer = await sharp(baseImageBuffer)
       .composite([
         { input: Buffer.from(svgTemplate), top: 0, left: 0 },
       ])
-      .png() // Aseguramos que la salida sea PNG
+      .png() // PNG Output
       .toBuffer();
 
     return finalBuffer;
