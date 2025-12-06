@@ -3,8 +3,6 @@ import { generateImage } from '@/services/image';
 import path from 'path';
 import { promises as fs } from 'fs';
 
-process.env.FONTCONFIG_PATH = '/tmp';
-
 export async function POST(
   request: Request
 ) {
