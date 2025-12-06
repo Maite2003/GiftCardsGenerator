@@ -35,10 +35,20 @@ export async function POST(
       console.log("Error formateando numero", e);
     }
 
-    const imagePath = path.join(process.cwd(), 'public', 'images', 'gift-card-base.png');
+    const baseUrl = new URL(request.url).origin; 
+    const imageUrl = `${baseUrl}/images/gift-card-base.png`;
     
-    const imageBuffer = await fs.readFile(imagePath);
+    const imageRes = await fetch(imageUrl);
+    
+    if (!imageRes.ok) {
+        console.error(`Error fetching image: ${imageRes.status} ${imageRes.statusText}`);
+        throw new Error("No se pudo cargar la imagen base");
+    }
 
+    const arrayBuffer = await imageRes.arrayBuffer();
+    const imageBuffer = Buffer.from(arrayBuffer);
+
+    
     // 3. Llamar al servicio con el buffer que acabamos de leer
     const finalImage = await generateImage(imageBuffer, {
       name,
