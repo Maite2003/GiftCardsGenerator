@@ -1,5 +1,5 @@
 {
-  "name": "GiftCardsGenerator",
+  "name": "giftcardsgenerator",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,8 +12,7 @@
     "axios": "^1.13.2",
     "next": "16.0.7",
     "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "sharp": "^0.34.5"
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

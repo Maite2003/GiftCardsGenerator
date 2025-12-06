@@ -75,7 +75,7 @@ export default function Home() {
             <input 
               type="text" 
               name="msg" 
-              maxLength={100}
+              maxLength={70}
               placeholder="Ej: ¡Feliz Cumple! De parte de..."
               className="w-full p-3 border-2 border-chapita-taupe/30 rounded-lg focus:border-chapita-orange focus:outline-none"
             />
@@ -101,10 +101,14 @@ export default function Home() {
       {/* Download and preview */}
       {imageSrc && (
         <div className="bg-white rounded-xl shadow-lg p-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <h3 className="text-lg font-bold text-chapita-dark mb-4">Vista Previa:</h3>
+          <h3 className="text-lg font-bold text-chapita-dark mb-4 text-center">Vista Previa:</h3>
           
-          <div className="rounded-lg overflow-hidden border border-gray-200 mb-6">
-            <img src={imageSrc} alt="Gift Card Generada" className="w-full h-auto" />
+          <div className="rounded-lg overflow-hidden border border-gray-200 mb-6 max-w-md mx-auto shadow-sm">
+            <img 
+              src={imageSrc} 
+              alt="Gift Card Generada" 
+              className="w-full h-auto" 
+            />
           </div>
 
           <a 
@@ -112,7 +116,7 @@ export default function Home() {
             download={`giftcard-chapita-${Date.now()}.png`}
             className="block w-full bg-chapita-dark text-white text-center font-bold py-3 rounded-lg hover:bg-black transition-colors"
           >
-            ⬇️ Descargar Imagen
+            ⬇️ Descargar Imagen Original
           </a>
         </div>
       )}
