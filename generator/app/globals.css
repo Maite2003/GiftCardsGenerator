@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-chapita-orange: #f6ae22;
+  --color-chapita-dark: #2b2a2a;
+  --color-chapita-beige: #eee3d0;
+  --color-chapita-taupe: #8f8577;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background-color: var(--color-chapita-beige);
+  color: var(--color-chapita-dark);
+  font-family: Arial, Helvetica, sans-serif;
+}
