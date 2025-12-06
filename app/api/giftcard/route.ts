@@ -3,8 +3,6 @@ import { generateImage } from '@/services/image';
 import path from 'path';
 import { promises as fs } from 'fs';
 
-const FONT_URL = 'https://github.com/googlefonts/opensans/blob/main/fonts/ttf/OpenSans-Bold.ttf';
-
 export async function POST(
   request: Request
 ) {
@@ -37,17 +35,14 @@ export async function POST(
     }
 
     const imagePath = path.join(process.cwd(), 'public', 'images', 'gift-card-base.png');
+    const fontPath = path.join(process.cwd(), 'public/fonts/OpenSans.ttf');
     
-    const [imageBuffer, fontRes] = await Promise.all([
-      fs.readFile(imagePath),
-      fetch(FONT_URL)
-    ]);
+    console.log("Buscando archivos en:", { imagePath, fontPath });
 
-    if (!fontRes.ok) throw new Error("No se pudo descargar la fuente");
-    
-    // Convertimos la respuesta de la fuente a Buffer
-    const fontArrayBuffer = await fontRes.arrayBuffer();
-    const fontBuffer = Buffer.from(fontArrayBuffer);
+    const [imageBuffer, fontBuffer] = await Promise.all([
+      fs.readFile(imagePath),
+      fs.readFile(fontPath)
+    ]);
 
     // 3. Generar la imagen
     const finalImage = await generateImage(imageBuffer, fontBuffer, {

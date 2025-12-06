@@ -66,13 +66,13 @@ export async function generateImage(
           }
           .data {
             fill: black;          
-            font-family: 'CustomFont', sans-serif;
+            font-family: 'CustomFont';
             font-weight: bold;
             font-size: 45px;
           }
           .msg {
             fill: white;          
-            font-family: 'CustomFont', sans-serif;
+            font-family: 'CustomFont';
             font-size: 40px;
             font-weight: 600;
           }
