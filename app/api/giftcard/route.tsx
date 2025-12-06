@@ -132,7 +132,6 @@ export async function POST(request: Request) {
         ],
         headers: {
           'Content-Type': 'image/png',
-          'Content-Disposition': `inline; filename="giftcard-${name.split(' ').join('-')}.png"`,
         },
       }
     );

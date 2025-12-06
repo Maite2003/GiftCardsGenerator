@@ -6,6 +6,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>('giftcard.png');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -14,6 +15,10 @@ export default function Home() {
     setImageSrc(null);
 
     const formData = new FormData(e.currentTarget);
+
+    const name = formData.get('name') as string;
+    const safeName = name.trim().replace(/\s+/g, '-'); // Reemplaza espacios por guiones
+    setFileName(`giftcard-chapita-${safeName}.png`);
 
     try {
       const response = await fetch('/api/giftcard', {
@@ -113,7 +118,7 @@ export default function Home() {
 
           <a 
             href={imageSrc} 
-            download={`giftcard-chapita-${Date.now()}.png`}
+            download={fileName}
             className="block w-full bg-chapita-dark text-white text-center font-bold py-3 rounded-lg hover:bg-black transition-colors"
           >
             ⬇️ Descargar Imagen Original
